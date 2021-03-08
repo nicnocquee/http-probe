@@ -1,7 +1,7 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 export interface ExtraData {
-  requestStartedAt: Date
+  requestStartedAt: number
   responseTime: Date
 }
 
@@ -10,7 +10,7 @@ export interface AxiosRequestConfigWithExtraData extends AxiosRequestConfig {
 }
 
 export interface AxiosResponseWithExtraData extends AxiosResponse {
-  extraData?: ExtraData
+  config: AxiosRequestConfigWithExtraData
 }
 
 export interface RequestConfig extends Omit<AxiosRequestConfig, 'data'> {

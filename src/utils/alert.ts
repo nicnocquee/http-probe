@@ -21,7 +21,7 @@ export const responseTimeGreaterThan: (
 ) => CheckResponseFn = (minimumTime) => (
   response: AxiosResponseWithExtraData
 ): boolean => {
-  const respTimeNum = response.extraData?.responseTime ?? 0
+  const respTimeNum = response.config.extraData?.responseTime ?? 0
 
   return respTimeNum > minimumTime
 }

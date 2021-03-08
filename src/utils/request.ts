@@ -5,6 +5,24 @@ import {
   RequestConfig,
 } from '../interfaces/request'
 
+const responseInterceptor = (axiosResponse: AxiosResponseWithExtraData) => {
+  const start = axiosResponse?.config.extraData?.requestStartedAt!
+  const responseTime = new Date().getTime() - start
+
+  const data = {
+    ...axiosResponse,
+    config: {
+      ...axiosResponse?.config,
+      extraData: {
+        ...axiosResponse?.config.extraData,
+        responseTime,
+      },
+    },
+  }
+
+  return data
+}
+
 export const request = async (config: RequestConfig) => {
   const axiosInstance = axios.create()
   axiosInstance.interceptors.request.use(
@@ -21,29 +39,11 @@ export const request = async (config: RequestConfig) => {
   )
   axiosInstance.interceptors.response.use(
     (axiosResponse: AxiosResponseWithExtraData) => {
-      const responseTime =
-        new Date().getTime() -
-        axiosResponse?.extraData?.requestStartedAt?.getTime()!
-      const data = {
-        ...axiosResponse,
-        extraData: {
-          ...axiosResponse?.extraData,
-          responseTime,
-        },
-      }
+      const data = responseInterceptor(axiosResponse)
       return data
     },
     (axiosResponse: AxiosResponseWithExtraData) => {
-      const responseTime =
-        new Date().getTime() -
-        axiosResponse?.extraData?.requestStartedAt?.getTime()!
-      const data = {
-        ...axiosResponse,
-        extraData: {
-          ...axiosResponse?.extraData,
-          responseTime,
-        },
-      }
+      const data = responseInterceptor(axiosResponse)
       throw data
     }
   )
