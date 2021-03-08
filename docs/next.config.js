@@ -37,8 +37,8 @@ const remarkPlugins = [
 
 module.exports = optimizedImages({
   pageExtensions: ['jsx', 'js', 'mdx', 'md'],
-  basePath: isProd ? '/test-github-pages-nextjs' : '', // change this when deploying to production
-  assetPrefix: isProd ? '/test-github-pages-nextjs/' : '', // change this when deploying to production
+  basePath: isProd ? '/http-probe' : '', // change this when deploying to production
+  assetPrefix: isProd ? '/http-probe/' : '', // change this when deploying to production
   env: {
     NEXT_PUBLIC_GA_TRACKING_ID: process.env.GA_TRACKING_ID || '',
     SENTRY_RELEASE: process.env.VERCEL_GITHUB_COMMIT_SHA || '',
