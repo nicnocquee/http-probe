@@ -105,44 +105,97 @@ describe('check time to response', () => {
       status: 200,
       statusText: 'OK',
       headers: '',
-      config: '',
-      extraData: {
-        requestStartedAt: new Date(100),
-        responseTime: new Date(300),
+      config: {
+        extraData: {
+          requestStartedAt: 1,
+          responseTime: 300,
+        },
       },
     } as AxiosResponseWithExtraData)
 
     expect(alert).to.be.true
   })
   it('should not trigger alert when response time equals to specified value', () => {
-    const alert = responseTimeGreaterThan(200)({} as AxiosResponseWithExtraData)
+    const alert = responseTimeGreaterThan(200)({
+      data: '',
+      status: 200,
+      statusText: 'OK',
+      headers: '',
+      config: {
+        extraData: {
+          requestStartedAt: 1,
+          responseTime: 200,
+        },
+      },
+    } as AxiosResponseWithExtraData)
     expect(alert).to.be.false
   })
   it('should not trigger alert when response is less than to specified value', () => {
-    const alert = responseTimeGreaterThan(200)({} as AxiosResponseWithExtraData)
+    const alert = responseTimeGreaterThan(200)({
+      data: '',
+      status: 200,
+      statusText: 'OK',
+      headers: '',
+      config: {
+        extraData: {
+          requestStartedAt: 1,
+          responseTime: 100,
+        },
+      },
+    } as AxiosResponseWithExtraData)
     expect(alert).to.be.false
   })
 })
 
 describe('check response against list of alerts', () => {
   it('should ignore unknown alert string', () => {
-    const alerts = validateResponse(
-      ['unknown'],
-      {} as AxiosResponseWithExtraData
-    )
+    const alerts = validateResponse(['unknown'], {
+      data: '',
+      status: 200,
+      statusText: 'OK',
+      headers: '',
+      config: {
+        extraData: {
+          requestStartedAt: 1,
+          responseTime: 300,
+        },
+      },
+    } as AxiosResponseWithExtraData)
     expect(alerts).to.have.length(0)
   })
   it('should recognize known alert strings', () => {
     const alerts = validateResponse(
       ['status-not-2xx', 'response-time-greater-than-200-ms'],
-      {} as AxiosResponseWithExtraData
+      {
+        data: '',
+        status: 200,
+        statusText: 'OK',
+        headers: '',
+        config: {
+          extraData: {
+            requestStartedAt: 1,
+            responseTime: 300,
+          },
+        },
+      } as AxiosResponseWithExtraData
     )
     expect(alerts).to.have.length(2)
   })
   it('should not trigger any alert when no alert condition is true', () => {
     const alerts = validateResponse(
       ['status-not-2xx', 'response-time-greater-than-200-ms'],
-      {} as AxiosResponseWithExtraData
+      {
+        data: '',
+        status: 200,
+        statusText: 'OK',
+        headers: '',
+        config: {
+          extraData: {
+            requestStartedAt: 1,
+            responseTime: 100,
+          },
+        },
+      } as AxiosResponseWithExtraData
     ).filter(({ status }) => status === true)
     expect(alerts).to.have.length(0)
   })
@@ -154,10 +207,11 @@ describe('check response against list of alerts', () => {
         status: 200,
         statusText: 'OK',
         headers: '',
-        config: '',
-        extraData: {
-          requestStartedAt: new Date(100),
-          responseTime: new Date(500),
+        config: {
+          extraData: {
+            requestStartedAt: 1,
+            responseTime: 500,
+          },
         },
       } as AxiosResponseWithExtraData
     ).filter(({ status }) => status === true)
@@ -171,10 +225,11 @@ describe('check response against list of alerts', () => {
         status: 500,
         statusText: 'OK',
         headers: '',
-        config: '',
-        extraData: {
-          requestStartedAt: new Date(100),
-          responseTime: new Date(500),
+        config: {
+          extraData: {
+            requestStartedAt: 1,
+            responseTime: 900,
+          },
         },
       } as AxiosResponseWithExtraData
     ).filter(({ status }) => status === true)

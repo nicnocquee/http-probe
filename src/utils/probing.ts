@@ -7,7 +7,7 @@ export async function probing(probe: Probe) {
     const res = await request({
       ...probe.request,
     })
-    return res
+    return res as AxiosResponseWithExtraData
   } catch (error) {
     let errStatus
     let errData
@@ -31,8 +31,8 @@ export async function probing(probe: Probe) {
       headers: errHdr,
       config: '',
       extraData: {
-        requestStartedAt: new Date(),
-        responseTime: new Date(),
+        requestStartedAt: 0,
+        responseTime: 0,
       },
     } as AxiosResponseWithExtraData
   }

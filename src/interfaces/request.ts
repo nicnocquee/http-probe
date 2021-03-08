@@ -2,7 +2,7 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 export interface ExtraData {
   requestStartedAt: number
-  responseTime: Date
+  responseTime: number
 }
 
 export interface AxiosRequestConfigWithExtraData extends AxiosRequestConfig {
